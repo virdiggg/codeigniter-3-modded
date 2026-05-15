@@ -1,7 +1,7 @@
 # Customized CodeIgniter 3
 
 ## Important Change
-This CodeIgniter 3 can run on PHP 8.3 so we have modified the **system files**, but you will most likely cannot run it in PHP 8.4. It is not fixable unless you modify the system files heavily as it will change it algorithm of its session creation, so we leave it as is.
+This CodeIgniter 3 can run on PHP 8.3 as we have modified the **system files**, but you will most likely cannot run it in PHP 8.4. It is not fixable unless you modify the system files heavily as it will change it algorithm of its session creation, so we leave it as is.
 What we did:
 - Add `#[\AllowDynamicProperties]` on most **system files** that are affected in PHP 8.3.
 - Modify deprecated error level exceptions so it will not used in PHP 8.0.
