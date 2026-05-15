@@ -9,6 +9,7 @@ What we did:
 
 ## Features
 
+- Disabled `index.php` in URL by default.
 - `application/config/config.php` is modified to automatically use logging, load composer, and dynamic base URL.
 - `application/config/database.php` and `application/config/config.php` is moved to development folder.
 - `application/config/autoload.php` is modified to autoload most mandatory libraries.
@@ -18,13 +19,13 @@ What we did:
 - `readme.rst` and `license.txt` is deleted, but we created `README.md` and `robots.txt` instead.
 - `.htaccess` is created to disable direct access to `.git` folder, `upload` and `assets` folder, also most files in root dir. It also has force HTTPS, but is disabled by default, you can enable it by removing the comment. You can also set ENVIRONMENT (production/development/testing) in `.htaccess`.
 - `.gitignore` is modified to handle `composer.lock`, `vendor` folder and `upload` folder.
-- `composer.json` is moved inside `application` folder, and modified to install `symfony/var-dumper` (dd() function), `virdiggg/seeder-ci3` (artisan-like function for CI3), `virdiggg/log-parser-ci3` (view log in JSON) and `virdiggg/merge-files` (merge files into a single PDF).
-- Example of manifest.json
-- Have log parser endpoint with controller `api/Storage.php`
+- `composer.json` is moved inside `application` folder, and modified to install [symfony/var-dumper](https://github.com/symfony/var-dumper) (dd() function), [virdiggg/seeder-ci3](https://github.com/virdiggg/seeder-ci3) (artisan-like function for CI3), [virdiggg/log-parser-ci3](https://github.com/virdiggg/log-parser-ci3) (view log in JSON format) and [virdiggg/merge-files](https://github.com/virdiggg/merge-files) (merge files into a single PDF).
+- Example of `manifest.json`.
+- Have log parser endpoint with controller `api/Storage.php`.
 - Have helpers `arr`, `str`, `permission`, and `encrypt` which have many useful functions.
 - `upload`, `assets`, `application/storage` and `application/migrations` folder is automatically created.
-- Have custom HTTP 500 handler `application/core/MY_Exceptions.php`, because it's default handler is shit even on production mode. HTML file is `applications/views/errors/html/error_500.php`
-- Helper `encrypt` & `permission` have integrated slug function with controller `api/Storage.php`
+- Have custom HTTP 500 handler `application/core/MY_Exceptions.php`, because it's default handler is shit even on production mode. HTML file is `applications/views/errors/html/error_500.php`.
+- Helper `encrypt` & `permission` have integrated slug function with controller `api/Storage.php`.
 ```php
 $this->load->helper('encrypt');
 $slug = parseSlug(encrypt(APPPATH.'storage/filename.pdf'));
@@ -43,8 +44,8 @@ $this->logger->setLogPath('queries'); // File name
 $message = json_encode(['COBA', 'TES']);
 $this->logger->write_log('error', $message);
 ```
-- Have library to merge files into a single PDF. See controllers/App.php for example.
-- Have library to export to .xlsx. See controllers/App.php for example.
+- Have library to merge files into a single PDF. See `controllers/App.php` for example.
+- Have library to export to .xlsx. See `controllers/App.php` for example.
 - Have trait soft delete `application/traits/SoftDelete.php` if you want to use soft delete query.
 - Have `README_SOFTDELETE.md` which explains how to use soft delete trait.
 - `application/config/database.php` and `application/config/config.php` is moved to development folder.
