@@ -37,6 +37,6 @@ class Storage extends MY_Controller
 
         $result = $this->logs->getLogs();
 
-        return $this->pretty()->asJson($result);
+        return $this->pretty(true)->asJson($result);
     }
 }
