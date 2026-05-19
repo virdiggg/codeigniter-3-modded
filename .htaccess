@@ -10,7 +10,7 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php?/$1 [QSA,L]
 
 # Block access to .gitignore and other sensitive files
-<FilesMatch "(\.gitignore|\.editorconfig|\.htaccess|composer.json|composer.lock|README.md|README_SOFTDELETE.md)">
+<FilesMatch "(\.gitignore|\.editorconfig|\.htaccess|composer.json|nginx.conf|Caddyfile|composer.lock|README.md|README_SOFTDELETE.md)">
     Order allow,deny
     Deny from all
 </FilesMatch>

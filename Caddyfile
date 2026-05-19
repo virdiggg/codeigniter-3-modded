@@ -14,6 +14,8 @@ php_fastcgi app:9000
     path /README.md
     path /README_SOFTDELETE.md
     path /.editorconfig
+    path /Caddyfile
+    path /nginx.conf
 }
 
 respond @blocked 404
