@@ -1,8 +1,9 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 
 use Virdiggg\LogParserCI3\MYViewer;
+use Virdiggg\SeederCi3\MY_Controller;
 
-class Storage extends CI_Controller
+class Storage extends MY_Controller
 {
     public $logs;
     public function __construct()
@@ -20,7 +21,7 @@ class Storage extends CI_Controller
         header('Content-Disposition: inline; filename="' . basename($result->name) . '"');
         header('Content-Length: ' . filesize($result->name));
         readfile($result->name);
-        exit;
+        return;
     }
 
     public function logs() {
@@ -36,7 +37,6 @@ class Storage extends CI_Controller
 
         $result = $this->logs->getLogs();
 
-        echo json_encode($result, JSON_PRETTY_PRINT);
-        return;
+        return $this->pretty()->asJson($result);
     }
 }

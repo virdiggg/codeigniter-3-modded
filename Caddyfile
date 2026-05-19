@@ -1,0 +1,30 @@
+:80
+
+root * /app
+
+encode gzip
+
+php_fastcgi app:9000
+
+@blocked {
+    path /.git*
+    path /.ht*
+    path /composer.json
+    path /composer.lock
+    path /README.md
+    path /README_SOFTDELETE.md
+    path /.editorconfig
+}
+
+respond @blocked 404
+
+@notStatic {
+    not file
+    not path /assets/*
+    not path /upload/*
+    not path /robots.txt
+}
+
+rewrite @notStatic /index.php?/{path}
+
+file_server

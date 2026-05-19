@@ -55,5 +55,6 @@ $route['translate_uri_dashes'] = FALSE;
 
 // Storage routes
 $route['storage']['GET'] = 'api/Storage/index';
+$route['api/logs']['GET'] = 'api/Storage/logs';
 
 // Your custom routes here
