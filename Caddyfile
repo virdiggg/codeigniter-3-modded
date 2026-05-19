@@ -16,6 +16,10 @@ php_fastcgi app:9000
     path /.editorconfig
     path /Caddyfile
     path /nginx.conf
+    path /Containerfile
+    path /Dockerfile
+    path /compose.yml
+    path /docker-compose.yml
 }
 
 respond @blocked 404
