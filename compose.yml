@@ -1,0 +1,25 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Containerfile
+
+    container_name: ci3-mod
+
+    user: root
+
+    volumes:
+      - .:/app:z
+
+  web:
+    image: docker.io/library/caddy:latest
+
+    ports:
+      - "8074:80"
+
+    volumes:
+      - .:/app:z
+      - ./Caddyfile:/etc/caddy/Caddyfile:z
+
+    depends_on:
+      - app
