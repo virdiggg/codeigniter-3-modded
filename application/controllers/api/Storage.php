@@ -31,7 +31,7 @@ class Storage extends MY_Controller
         // Log extension
         // $this->logs->setExt('php');
 
-        $filterDate = $this->input->post('date') ? $this->input->post('date') : date('Y-m-d');
+        $filterDate = $this->input->get('date') ? $this->input->get('date') : date('Y-m-d');
 
         $this->logs->setName('log-' . $filterDate);
 
