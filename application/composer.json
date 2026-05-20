@@ -11,9 +11,10 @@
         "source": "https://github.com/bcit-ci/CodeIgniter"
     },
     "require": {
-        "php": ">=7.4",
+        "php": ">=7.3",
         "virdiggg/log-parser-ci3": "^1.0",
-        "virdiggg/merge-files": "^2.0"
+        "virdiggg/merge-files": "^2.0",
+        "virdiggg/seeder-ci3": "^2.4"
     },
     "suggest": {
         "paragonie/random_compat": "Provides better randomness in PHP 5.x"
@@ -34,7 +35,6 @@
     "require-dev": {
         "symfony/var-dumper": "^5.4",
         "mikey179/vfsstream": "1.6.*",
-        "phpunit/phpunit": "4.* || 5.* || 9.*",
-        "virdiggg/seeder-ci3": "^2.4"
+        "phpunit/phpunit": "4.* || 5.* || 9.*"
     }
 }
