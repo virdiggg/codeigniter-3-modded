@@ -1,7 +1,7 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 
-use Virdiggg\SeederCi3\MY_AppController;
 use Virdiggg\MergeFiles\Merge as MF;
+use Virdiggg\SeederCi3\MY_AppController;
 
 class App extends MY_AppController
 {
@@ -27,8 +27,13 @@ class App extends MY_AppController
     }
 
     // If you don't wish to have rollback function
-    public function rollback() {
-        return;
+    public function rollback()
+    {
+        if (ENVIRONMENT === "production") {
+            return;
+        }
+
+        parent::rollback();
     }
 
     public function merge_files() {
@@ -101,7 +106,7 @@ class App extends MY_AppController
             // $this->db->query("GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO myrole");
             // $this->load->library('Logger');
             // $this->logger->setLogPath('queries');
-            // $this->logger->write_log('error', 'User run migration.');
+            // $this->logger->write_log('debug', 'User run migration.');
         }
     }
 }
