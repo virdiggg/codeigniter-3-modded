@@ -44,7 +44,7 @@ This distribution includes modifications to core CodeIgniter 3 system files to i
 
 ## Important Limitation: PHP 8.4
 
-This project is currently **not compatible with PHP 8.4**.
+This project is currently **not compatible with PHP 8.4 or above**.
 
 The incompatibility primarily originates from internal session handling behavior within CodeIgniter 3 itself.
 
@@ -271,9 +271,7 @@ Example:
 ```php
 $this->load->helper('encrypt');
 
-$slug = parseSlug(
-    encrypt(APPPATH.'storage/filename.pdf')
-);
+$slug = parseSlug(encrypt(APPPATH.'storage/filename.pdf'));
 
 echo "<img src=\"".base_url($slug)."\" alt=\"img\" />";
 ```
@@ -328,7 +326,7 @@ Supports:
 Example usage available in:
 
 ```text
-controllers/App.php
+controllers/Example.php
 ```
 
 ---
@@ -340,7 +338,7 @@ Built-in XLSX export helper included.
 Example usage available in:
 
 ```text
-controllers/App.php
+controllers/Example.php
 ```
 
 ---
