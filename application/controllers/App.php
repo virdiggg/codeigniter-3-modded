@@ -1,8 +1,8 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 
-use Virdiggg\SeederCi3\MY_ApppController;
+use Virdiggg\SeederCi3\MY_AppController;
 
-class App extends MY_ApppController
+class App extends MY_AppController
 {
     /**
      * Hooks for migrate() function.
