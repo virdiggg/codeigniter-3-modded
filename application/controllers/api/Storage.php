@@ -13,7 +13,7 @@ class Storage extends MY_Controller
         loadHttpHeaders(true);
     }
 
-    public function index($slug = null) {
+    public function index() {
         $slug = $this->input->get('s');
         $result = parseImageSlug($slug);
 
