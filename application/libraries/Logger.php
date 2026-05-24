@@ -5,6 +5,13 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Logger extends \CI_Log
 {
     /**
+     * Log file name prefix
+     * 
+     * @var string
+     */
+    protected $_filename_prefix;
+
+    /**
      * Path to save log files
      *
      * @var string
@@ -131,7 +138,7 @@ class Logger extends \CI_Log
             return FALSE;
         }
 
-        $filepath = $this->_log_path . 'log-' . date('Y-m-d') . '.' . $this->_file_ext;
+        $filepath = $this->_log_path . $this->_filename_prefix . 'log-' . date('Y-m-d') . '.' . $this->_file_ext;
         $message = '';
 
         if (!file_exists($filepath)) {
@@ -241,8 +248,8 @@ class Logger extends \CI_Log
      * 
      * @return void
      */
-    public function setLogPath($name = '') {
-        // Reset to default log if $name is empty
-        $this->_log_path = $name ? $this->_log_path . $name . '-' : APPPATH . 'logs' . DIRECTORY_SEPARATOR;
+    public function setFilenamePrefix($name = '')
+    {
+        $this->_filename_prefix = $name ? $name . '-' : '';
     }
 }
