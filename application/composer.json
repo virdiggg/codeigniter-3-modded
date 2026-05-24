@@ -11,10 +11,11 @@
         "source": "https://github.com/bcit-ci/CodeIgniter"
     },
     "require": {
-        "php": ">=7.3",
+        "php": ">=7.4",
         "virdiggg/log-parser-ci3": "^1.0",
         "virdiggg/merge-files": "^2.0",
-        "virdiggg/seeder-ci3": "^2.4"
+        "virdiggg/seeder-ci3": "^3.0",
+        "ext-mbstring": "*"
     },
     "suggest": {
         "paragonie/random_compat": "Provides better randomness in PHP 5.x"

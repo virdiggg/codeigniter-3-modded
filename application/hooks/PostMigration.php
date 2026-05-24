@@ -6,12 +6,11 @@ class PostMigration
     {
         $CI = &get_instance();
 
-        // example
+        // Migrated from legacy App::__destruct()
         // $CI->db->query("GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO myrole");
         // $CI->db->query("GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO myrole");
-
-        $CI->load->library('Logger');
-        $CI->logger->setFilenamePrefix('queries');
-        $CI->logger->write_log('error','Migrate success.');
+        // $CI->load->library('Logger');
+        // $CI->logger->setLogPath('queries');
+        // $CI->logger->write_log('error', 'User run migration.');
     }
 }

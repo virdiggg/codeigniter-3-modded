@@ -167,12 +167,28 @@ Integrated:
 virdiggg/seeder-ci3
 ```
 
-Provides:
+Provides modern CLI tooling and Artisan-like workflows for CodeIgniter 3.
+
+Features include:
 
 - Migration generation
+- Migration execution
+- Migration rollback
 - Seeder generation
-- Resource scaffolding
-- Artisan-like developer workflows
+- Seeder execution
+- Batch seeding
+- Model generation
+- Controller generation
+- CRUD scaffolding
+- API resource scaffolding
+- Environment-aware command execution
+- CLI helper utilities
+
+Read more:
+
+- [Seeder CI3](https://github.com/virdiggg/seeder-ci3)
+- [Seeder CI3 Usage Guide](https://github.com/virdiggg/seeder-ci3/blob/master/USAGE.md)
+- [Seeder CI3 Upgrade Guide](https://github.com/virdiggg/seeder-ci3/blob/master/UPGRADE.md)
 
 ---
 
@@ -227,7 +243,7 @@ Example:
 ```php
 $this->load->library('Logger');
 
-$this->logger->setLogPath('queries');
+$this->logger->setFilenamePrefix('queries');
 
 $message = json_encode(['COBA', 'TES']);
 
@@ -282,7 +298,7 @@ echo "<img src=\"".base_url($slug)."\" alt=\"img\" />";
 
 ## Custom Benchmarking
 
-Benchmarking can be enabled through:
+Default CI3's benchmark is replaced with custom benchmarking, can be enabled through:
 
 ```php
 $config['using_benchmark'] = true;
@@ -329,6 +345,32 @@ Example usage available in:
 controllers/Example.php
 ```
 
+### Required PHP Extension
+
+The `mbstring` extension is required.
+
+### External Application Required
+
+It is mandatory to install `ghostscript` when using this library.
+
+### Why Ghostscript Is Required
+
+Many PHP PDF libraries such as FPDI, FPDF, and mPDF have limitations when importing or merging PDFs generated with newer PDF specifications (commonly PDF 1.5+).
+
+This library automatically preprocesses incompatible PDFs through Ghostscript to:
+
+- Normalize PDF versions
+- Improve merge compatibility
+- Prevent parser/import failures
+- Avoid dependency on commercial PDF parser addons
+
+Ghostscript is therefore a mandatory dependency.
+
+Read more:
+
+- [merge-files](https://github.com/virdiggg/merge-files/blob/master/README.md)
+- [ghostscript instalation](https://github.com/virdiggg/merge-files/blob/master/README.md#ghostscript-installation)
+
 ---
 
 ## XLSX Export Utility
@@ -353,9 +395,7 @@ application/traits/SoftDelete.php
 
 Documentation:
 
-```text
-README_SOFTDELETE.md
-```
+- [Softdelete Trait](./README_SOFTDELETE.md)
 
 ---
 
