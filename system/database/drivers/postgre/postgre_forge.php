@@ -67,6 +67,13 @@ class CI_DB_postgre_forge extends CI_DB_forge {
 	);
 
 	/**
+	 * CREATE TABLE IF statement
+	 * 
+	 * @var string
+	 */
+	protected $create_table_if = 'CREATE TABLE';
+
+	/**
 	 * NULL value representation in CREATE/ALTER TABLE statements
 	 *
 	 * @var	string
@@ -109,7 +116,7 @@ class CI_DB_postgre_forge extends CI_DB_forge {
 		}
 
 		$sql = 'ALTER TABLE '.$this->db->escape_identifiers($table);
-		$sqls = array();
+		$sqls = [];
 		for ($i = 0, $c = count($field); $i < $c; $i++)
 		{
 			if ($field[$i]['_literal'] !== FALSE)

@@ -78,7 +78,7 @@ class CI_DB_mysqli_utility extends CI_DB_utility {
 	 * @param	array	$params	Preferences
 	 * @return	mixed
 	 */
-	protected function _backup($params = array())
+	protected function _backup($params = [])
 	{
 		if (count($params) === 0)
 		{
@@ -123,7 +123,7 @@ class CI_DB_mysqli_utility extends CI_DB_utility {
 			}
 
 			$i = 0;
-			$result = $query->result_array();
+			$result = $query->result_[];
 			foreach ($result[0] as $val)
 			{
 				if ($i++ % 2)
@@ -152,7 +152,7 @@ class CI_DB_mysqli_utility extends CI_DB_utility {
 
 			$i = 0;
 			$field_str = '';
-			$is_int = array();
+			$is_int = [];
 			while ($field = $query->result_id->fetch_field())
 			{
 				// Most versions of MySQL store timestamp as a string
@@ -167,7 +167,7 @@ class CI_DB_mysqli_utility extends CI_DB_utility {
 			$field_str = preg_replace('/, $/' , '', $field_str);
 
 			// Build the insert string
-			foreach ($query->result_array() as $row)
+			foreach ($query->result_[] as $row)
 			{
 				$val_str = '';
 

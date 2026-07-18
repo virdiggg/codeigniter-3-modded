@@ -134,8 +134,8 @@ class CI_DB_pdo_sqlite_driver extends CI_DB_pdo_driver {
 			return FALSE;
 		}
 
-		$fields = array();
-		foreach ($result->result_array() as $row)
+		$fields = [];
+		foreach ($result->result_[] as $row)
 		{
 			$fields[] = $row['name'];
 		}
@@ -158,13 +158,13 @@ class CI_DB_pdo_sqlite_driver extends CI_DB_pdo_driver {
 			return FALSE;
 		}
 
-		$query = $query->result_array();
+		$query = $query->result_[];
 		if (empty($query))
 		{
 			return FALSE;
 		}
 
-		$retval = array();
+		$retval = [];
 		for ($i = 0, $c = count($query); $i < $c; $i++)
 		{
 			$retval[$i]			= new stdClass();

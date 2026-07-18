@@ -65,7 +65,7 @@ class CI_DB_pdo_driver extends CI_DB {
 	 *
 	 * @var	array
 	 */
-	public $options = array();
+	public $options = [];
 
 	// --------------------------------------------------------------------
 

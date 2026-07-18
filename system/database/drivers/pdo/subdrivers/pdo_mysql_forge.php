@@ -249,7 +249,7 @@ class CI_DB_pdo_mysql_forge extends CI_DB_pdo_forge {
 				.' ('.implode(', ', $this->db->escape_identifiers($this->keys[$i])).')';
 		}
 
-		$this->keys = array();
+		$this->keys = [];
 
 		return $sql;
 	}

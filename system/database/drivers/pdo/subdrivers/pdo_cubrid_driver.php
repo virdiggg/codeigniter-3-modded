@@ -151,7 +151,7 @@ class CI_DB_pdo_cubrid_driver extends CI_DB_pdo_driver {
 		}
 		$query = $query->result_object();
 
-		$retval = array();
+		$retval = [];
 		for ($i = 0, $c = count($query); $i < $c; $i++)
 		{
 			$retval[$i]			= new stdClass();

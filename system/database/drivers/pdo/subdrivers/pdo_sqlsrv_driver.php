@@ -165,7 +165,7 @@ class CI_DB_pdo_sqlsrv_driver extends CI_DB_pdo_driver {
 
 		// Determine how identifiers are escaped
 		$query = $this->query('SELECT CASE WHEN (@@OPTIONS | 256) = @@OPTIONS THEN 1 ELSE 0 END AS qi');
-		$query = $query->row_array();
+		$query = $query->row_[];
 		$this->_quoted_identifier = empty($query) ? FALSE : (bool) $query['qi'];
 		$this->_escape_char = ($this->_quoted_identifier) ? '"' : array('[', ']');
 
@@ -234,7 +234,7 @@ class CI_DB_pdo_sqlsrv_driver extends CI_DB_pdo_driver {
 		}
 		$query = $query->result_object();
 
-		$retval = array();
+		$retval = [];
 		for ($i = 0, $c = count($query); $i < $c; $i++)
 		{
 			$retval[$i]			= new stdClass();
@@ -261,7 +261,7 @@ class CI_DB_pdo_sqlsrv_driver extends CI_DB_pdo_driver {
 	protected function _update($table, $values)
 	{
 		$this->qb_limit = FALSE;
-		$this->qb_orderby = array();
+		$this->qb_orderby = [];
 		return parent::_update($table, $values);
 	}
 
@@ -324,7 +324,7 @@ class CI_DB_pdo_sqlsrv_driver extends CI_DB_pdo_driver {
 			else
 			{
 				// Use only field names and their aliases, everything else is out of our scope.
-				$select = array();
+				$select = [];
 				$field_regexp = ($this->_quoted_identifier)
 					? '("[^\"]+")' : '(\[[^\]]+\])';
 				for ($i = 0, $c = count($this->qb_select); $i < $c; $i++)

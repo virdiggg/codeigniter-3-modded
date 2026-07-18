@@ -70,7 +70,7 @@ class CI_DB_sqlite3_result extends CI_DB_result {
 	 */
 	public function list_fields()
 	{
-		$field_names = array();
+		$field_names = [];
 		for ($i = 0, $c = $this->num_fields(); $i < $c; $i++)
 		{
 			$field_names[] = $this->result_id->columnName($i);
@@ -98,7 +98,7 @@ class CI_DB_sqlite3_result extends CI_DB_result {
 			SQLITE3_NULL	=> 'null'
 		);
 
-		$retval = array();
+		$retval = [];
 		for ($i = 0, $c = $this->num_fields(); $i < $c; $i++)
 		{
 			$retval[$i]			= new stdClass();

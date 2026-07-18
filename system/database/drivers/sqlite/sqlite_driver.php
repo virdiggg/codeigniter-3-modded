@@ -244,13 +244,13 @@ class CI_DB_sqlite_driver extends CI_DB {
 			return FALSE;
 		}
 
-		$query = $query->result_array();
+		$query = $query->result_[];
 		if (empty($query))
 		{
 			return FALSE;
 		}
 
-		$retval = array();
+		$retval = [];
 		for ($i = 0, $c = count($query); $i < $c; $i++)
 		{
 			$retval[$i]			= new stdClass();

@@ -237,7 +237,7 @@ class CI_DB_mysqli_forge extends CI_DB_forge {
 				.' ('.implode(', ', $this->db->escape_identifiers($this->keys[$i])).')';
 		}
 
-		$this->keys = array();
+		$this->keys = [];
 
 		return $sql;
 	}

@@ -93,7 +93,7 @@ class CI_DB_mssql_forge extends CI_DB_forge {
 		}
 
 		$sql = 'ALTER TABLE '.$this->db->escape_identifiers($table).' ALTER COLUMN ';
-		$sqls = array();
+		$sqls = [];
 		for ($i = 0, $c = count($field); $i < $c; $i++)
 		{
 			$sqls[] = $sql.$this->_process_column($field[$i]);

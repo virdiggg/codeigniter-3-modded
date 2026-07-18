@@ -111,7 +111,7 @@ class CI_DB_pdo_cubrid_forge extends CI_DB_pdo_forge {
 		}
 
 		$sql = 'ALTER TABLE '.$this->db->escape_identifiers($table);
-		$sqls = array();
+		$sqls = [];
 		for ($i = 0, $c = count($field); $i < $c; $i++)
 		{
 			if ($field[$i]['_literal'] !== FALSE)
@@ -223,7 +223,7 @@ class CI_DB_pdo_cubrid_forge extends CI_DB_pdo_forge {
 				.' ('.implode(', ', $this->db->escape_identifiers($this->keys[$i])).')';
 		}
 
-		$this->keys = array();
+		$this->keys = [];
 
 		return $sql;
 	}

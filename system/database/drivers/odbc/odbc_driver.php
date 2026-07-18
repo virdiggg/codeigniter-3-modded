@@ -106,7 +106,7 @@ class CI_DB_odbc_driver extends CI_DB_driver {
 	 *
 	 * @var	array
 	 */
-	private $binds = array();
+	private $binds = [];
 
 	// --------------------------------------------------------------------
 
@@ -236,7 +236,7 @@ class CI_DB_odbc_driver extends CI_DB_driver {
 		}
 
 		$this->odbc_result = NULL;
-		$this->binds       = array();
+		$this->binds       = [];
 
 		return $success;
 	}

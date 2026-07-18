@@ -48,6 +48,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class CI_DB_pdo_pgsql_forge extends CI_DB_pdo_forge {
 
 	/**
+	 * CREATE TABLE IF statement
+	 * 
+	 * @var string
+	 */
+	protected $create_table_if = 'CREATE TABLE';
+
+	/**
 	 * DROP TABLE IF statement
 	 *
 	 * @var	string
@@ -121,7 +128,7 @@ class CI_DB_pdo_pgsql_forge extends CI_DB_pdo_forge {
 		}
 
 		$sql = 'ALTER TABLE '.$this->db->escape_identifiers($table);
-		$sqls = array();
+		$sqls = [];
 		for ($i = 0, $c = count($field); $i < $c; $i++)
 		{
 			if ($field[$i]['_literal'] !== FALSE)
