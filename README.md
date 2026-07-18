@@ -22,6 +22,7 @@ This distribution was created to address those limitations by introducing:
 - Resource generation utilities
 - Query profiling
 - PDF and XLSX helper integrations
+- Async PostgreSQL query support
 - Cleaner environment separation
 
 without fundamentally changing how CodeIgniter 3 works.
@@ -39,6 +40,8 @@ This distribution includes modifications to core CodeIgniter 3 system files to i
 - Added `#[\AllowDynamicProperties]` to affected system classes
 - Updated deprecated error handling logic for PHP 8+
 - Adjusted compatibility behavior for modern PHP runtime changes
+- The bundled `pgasync` driver targets PHP 7.4–8.3 and depends only on
+- `ext-pgsql`; it does not use any PHP 8-only syntax or functions.
 
 ---
 
@@ -228,6 +231,31 @@ $hook['post_system'] = [
 
 ---
 
+## Async PostgreSQL Driver
+
+Includes a custom `pgasync` database driver for non-blocking, concurrent
+PostgreSQL queries — a drop-in extension of CI3's stock `postgre` driver.
+
+Enable it in `application/config/database.php`:
+
+```php
+$db['default']['dbdriver'] = 'pgasync';
+$db['default']['pool_size'] = 4;
+```
+
+Existing code (`$this->db->query()`, Active Record, migrations) is unaffected. New opt-in methods for concurrent queries:
+
+```php
+$h = $this->db->query_async("SELECT ...");
+$result = $this->db->await($h);
+```
+
+Read more:
+
+- [Async PostgreSQL Driver Guide](./docs/ASYNCPG.md)
+
+---
+
 ## Enhanced Logging System
 
 Custom logging library:
@@ -395,7 +423,7 @@ application/traits/SoftDelete.php
 
 Documentation:
 
-- [Softdelete Trait](./README_SOFTDELETE.md)
+- [Softdelete Trait](./docs/SOFTDELETE.md)
 
 ---
 
@@ -433,7 +461,7 @@ This distribution is especially suitable for:
 - Legacy enterprise applications
 - Internal operational systems
 - Long-term maintenance projects
-- PostgreSQL-backed CI3 applications
+- PostgreSQL-backed CI3 applications, including concurrent/async query workloads
 - Rapid backend development
 - Teams modernizing old CI3 codebases
 - Self-hosted business systems
