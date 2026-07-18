@@ -307,7 +307,39 @@ class CI_DB_pgasync_driver extends CI_DB_postgre_driver {
 		$this->async_pool[$slot_index]['busy'] = TRUE;
 
 		$handle_id = ++$this->async_seq;
-		$this->async_map[$handle_id] = $slot_index;
+
+		// Participate in CI3's own query logging/profiling arrays, the
+		// same way CI_DB_driver::query() does (DB_driver.php), so
+		// $this->db->queries / $this->db->query_times / query_count() /
+		// elapsed_time() and anything built on them (query profiler
+		// hooks, the built-in profiler library, custom logging hooks
+		// like the one in application/hooks/Queries.php) also see async
+		// queries — not just synchronous ones.
+		//
+		// We push a placeholder 0 into query_times at dispatch time
+		// (mirroring CI_DB_driver::query()'s own failure-path
+		// convention) and patch it with the real elapsed time once
+		// await() completes, so the two arrays always stay the same
+		// length/index-aligned even while multiple async queries are
+		// in flight at once.
+		$log_index = NULL;
+		if ($this->save_queries === TRUE)
+		{
+			$log_msg = $sql;
+			if ( ! empty($binds))
+			{
+				$log_msg .= ' /* binds: '.json_encode($binds).' */';
+			}
+			$this->queries[]     = $log_msg;
+			$this->query_times[] = 0;
+			$log_index = count($this->queries) - 1;
+		}
+
+		$this->async_map[$handle_id] = array(
+			'slot'      => $slot_index,
+			'start'     => microtime(TRUE),
+			'log_index' => $log_index,
+		);
 
 		return $handle_id;
 	}
@@ -325,7 +357,7 @@ class CI_DB_pgasync_driver extends CI_DB_postgre_driver {
 			return NULL;
 		}
 
-		$i    = $this->async_map[$handle];
+		$i    = $this->async_map[$handle]['slot'];
 		$conn = $this->async_pool[$i]['conn'];
 
 		pg_consume_input($conn);
@@ -356,9 +388,11 @@ class CI_DB_pgasync_driver extends CI_DB_postgre_driver {
 			$timeout = $this->async_timeout;
 		}
 
-		$i    = $this->async_map[$handle];
-		$conn = $this->async_pool[$i]['conn'];
-		$start = microtime(TRUE);
+		$meta      = $this->async_map[$handle];
+		$i         = $meta['slot'];
+		$log_index = $meta['log_index'];
+		$conn      = $this->async_pool[$i]['conn'];
+		$start     = $meta['start'];
 
 		pg_consume_input($conn);
 
@@ -368,15 +402,18 @@ class CI_DB_pgasync_driver extends CI_DB_postgre_driver {
 			{
 				$this->async_pool[$i]['busy'] = FALSE;
 				unset($this->async_map[$handle]);
+				// query_times[$log_index] stays at its dispatch-time 0
+				// placeholder, same convention CI_DB_driver::query() uses
+				// for failed queries.
 				return FALSE; // timed out
 			}
 
 			$socket = @pg_socket($conn);
 			if ($socket)
 			{
-				$read   = array($socket);
+				$read   = [$socket];
 				$write  = [];
-				$except = array($socket);
+				$except = [$socket];
 				@stream_select($read, $write, $except, 1); // 1s tick
 			}
 			else
@@ -407,11 +444,25 @@ class CI_DB_pgasync_driver extends CI_DB_postgre_driver {
 		if ( ! empty($err_state) && in_array(pg_result_status($pg_result), [PGSQL_BAD_RESPONSE, PGSQL_NONFATAL_ERROR, PGSQL_FATAL_ERROR], TRUE))
 		{
 			log_message('error', 'pgasync query error: '.$err_state);
+			// leave query_times[$log_index] at its 0 placeholder, matching
+			// CI_DB_driver::query()'s failure-path behavior.
 			return FALSE;
 		}
 
+		// Success: finish the same bookkeeping CI_DB_driver::query() does
+		// after a successful synchronous query, so query_count(),
+		// elapsed_time(), and $this->db->query_times[] all reflect async
+		// queries too.
+		$elapsed = microtime(TRUE) - $start;
+		if ($this->save_queries === TRUE && $log_index !== NULL)
+		{
+			$this->query_times[$log_index] = $elapsed;
+		}
+		$this->benchmark += $elapsed;
+		$this->query_count++;
+
 		// Route through CI3's normal result wrapper so you get the same
-		// row(), result_[], num_rows(), etc. API as a sync query.
+		// row(), result_array(), num_rows(), etc. API as a sync query.
 		// CI3's own query() lazily requires the result driver file the
 		// first time it's needed via load_rdriver() — do the same here,
 		// since await() can be the very first place a result object is
