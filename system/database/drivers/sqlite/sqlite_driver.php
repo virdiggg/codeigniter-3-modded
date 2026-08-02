@@ -244,7 +244,7 @@ class CI_DB_sqlite_driver extends CI_DB {
 			return FALSE;
 		}
 
-		$query = $query->result_[];
+		$query = $query->result_array();
 		if (empty($query))
 		{
 			return FALSE;
