@@ -135,7 +135,7 @@ class CI_DB_pdo_sqlite_driver extends CI_DB_pdo_driver {
 		}
 
 		$fields = [];
-		foreach ($result->result_[] as $row)
+		foreach ($result->result_array() as $row)
 		{
 			$fields[] = $row['name'];
 		}
@@ -158,7 +158,7 @@ class CI_DB_pdo_sqlite_driver extends CI_DB_pdo_driver {
 			return FALSE;
 		}
 
-		$query = $query->result_[];
+		$query = $query->result_array();
 		if (empty($query))
 		{
 			return FALSE;
