@@ -123,7 +123,7 @@ class CI_DB_mysqli_utility extends CI_DB_utility {
 			}
 
 			$i = 0;
-			$result = $query->result_[];
+			$result = $query->result_array();
 			foreach ($result[0] as $val)
 			{
 				if ($i++ % 2)
@@ -167,7 +167,7 @@ class CI_DB_mysqli_utility extends CI_DB_utility {
 			$field_str = preg_replace('/, $/' , '', $field_str);
 
 			// Build the insert string
-			foreach ($query->result_[] as $row)
+			foreach ($query->result_array() as $row)
 			{
 				$val_str = '';
 
