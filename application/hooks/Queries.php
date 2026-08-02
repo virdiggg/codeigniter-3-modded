@@ -22,7 +22,7 @@ class Queries {
 	public function logging()
 	{
 		$this->CI->load->library('Logger');
-		$this->CI->logger->setLogPath('queries');
+		$this->CI->logger->setFilenamePrefix('queries');
 		$times = $this->CI->db->query_times;
 
         foreach ($this->CI->db->queries as $key => $query) { 

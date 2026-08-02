@@ -69,7 +69,7 @@ class CI_Session {
 	 * @param	array	$params	Configuration parameters
 	 * @return	void
 	 */
-	public function __construct(array $params = array())
+	public function __construct(array $params = [])
 	{
 		// No sessions under CLI
 		if (is_cli())
@@ -390,7 +390,33 @@ class CI_Session {
 	 */
 	protected function _configure_sid_length()
 	{
-		if (PHP_VERSION_ID < 70100)
+		// As of PHP 8.4, changing session.sid_length and
+		// session.sid_bits_per_character away from their defaults is
+		// deprecated (see https://www.php.net/manual/en/migration84.deprecated.php).
+		// The old logic below tries to *increase* sid_length via ini_set()
+		// whenever the configured entropy is under 160 bits — on 8.4+ that
+		// ini_set() call itself triggers a deprecation notice. Since that
+		// notice fires while the Session library is still initializing
+		// (i.e. before session_start() runs), if it gets displayed/logged
+		// as output it sends a partial response early and causes every
+		// subsequent session call (session_set_save_handler(),
+		// session_start(), the driver's own ini_set('session.save_path', ...))
+		// to fail with "headers already sent" warnings.
+		//
+		// Fix: on PHP >= 8.4 we stop trying to change these INI settings
+		// at all and just read whatever PHP is already using (its fixed
+		// default is a 32-character hex session ID = 128 bits of entropy,
+		// which is still far beyond what's needed for a session ID — this
+		// is also literally what the PHP manual itself recommends doing:
+		// "Update the session storage backend to accept 32 character
+		// hexadecimal session IDs and stop changing these two INI
+		// settings instead.")
+		if (PHP_VERSION_ID >= 80400)
+		{
+			$bits_per_character = (int) ini_get('session.sid_bits_per_character');
+			$sid_length         = (int) ini_get('session.sid_length');
+		}
+		elseif (PHP_VERSION_ID < 70100)
 		{
 			$hash_function = ini_get('session.hash_function');
 			if (ctype_digit($hash_function))
@@ -531,10 +557,10 @@ class CI_Session {
 	{
 		if ( ! isset($_SESSION['__ci_vars']))
 		{
-			return array();
+			return [];
 		}
 
-		$keys = array();
+		$keys = [];
 		foreach (array_keys($_SESSION['__ci_vars']) as $key)
 		{
 			is_int($_SESSION['__ci_vars'][$key]) OR $keys[] = $key;
@@ -589,7 +615,7 @@ class CI_Session {
 
 		if (is_array($key))
 		{
-			$temp = array();
+			$temp = [];
 
 			foreach ($key as $k => $v)
 			{
@@ -639,10 +665,10 @@ class CI_Session {
 	{
 		if ( ! isset($_SESSION['__ci_vars']))
 		{
-			return array();
+			return [];
 		}
 
-		$keys = array();
+		$keys = [];
 		foreach (array_keys($_SESSION['__ci_vars']) as $key)
 		{
 			is_int($_SESSION['__ci_vars'][$key]) && $keys[] = $key;
@@ -800,21 +826,21 @@ class CI_Session {
 		}
 		elseif (empty($_SESSION))
 		{
-			return array();
+			return [];
 		}
 
-		$userdata = array();
+		$userdata = [];
 		$_exclude = array_merge(
 			array('__ci_vars'),
 			$this->get_flash_keys(),
 			$this->get_temp_keys()
 		);
 
-		foreach (array_keys($_SESSION) as $key)
+		foreach (array_keys($_SESSION) as $index)
 		{
-			if ( ! in_array($key, $_exclude, TRUE))
+			if ( ! in_array($index, $_exclude, TRUE))
 			{
-				$userdata[$key] = $_SESSION[$key];
+				$userdata[$index] = $_SESSION[$index];
 			}
 		}
 
@@ -836,9 +862,9 @@ class CI_Session {
 	{
 		if (is_array($data))
 		{
-			foreach ($data as $key => &$value)
+			foreach ($data as $key => &$val)
 			{
-				$_SESSION[$key] = $value;
+				$_SESSION[$key] = $val;
 			}
 
 			return;
@@ -920,13 +946,13 @@ class CI_Session {
 				: NULL;
 		}
 
-		$flashdata = array();
+		$flashdata = [];
 
 		if ( ! empty($_SESSION['__ci_vars']))
 		{
-			foreach ($_SESSION['__ci_vars'] as $key => &$value)
+			foreach ($_SESSION['__ci_vars'] as $index => &$value)
 			{
-				is_int($value) OR $flashdata[$key] = $_SESSION[$key];
+				is_int($value) OR $flashdata[$index] = $_SESSION[$index];
 			}
 		}
 
@@ -984,13 +1010,13 @@ class CI_Session {
 				: NULL;
 		}
 
-		$tempdata = array();
+		$tempdata = [];
 
 		if ( ! empty($_SESSION['__ci_vars']))
 		{
-			foreach ($_SESSION['__ci_vars'] as $key => &$value)
+			foreach ($_SESSION['__ci_vars'] as $index => &$value)
 			{
-				is_int($value) && $tempdata[$key] = $_SESSION[$key];
+				is_int($value) && $tempdata[$index] = $_SESSION[$index];
 			}
 		}
 
