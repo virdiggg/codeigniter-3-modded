@@ -237,7 +237,7 @@ class CI_DB_sqlite3_driver extends CI_DB {
 		}
 
 		$fields = [];
-		foreach ($result->result_[] as $row)
+		foreach ($result->result_array() as $row)
 		{
 			$fields[] = $row['name'];
 		}
@@ -260,7 +260,7 @@ class CI_DB_sqlite3_driver extends CI_DB {
 			return FALSE;
 		}
 
-		$query = $query->result_[];
+		$query = $query->result_array();
 		if (empty($query))
 		{
 			return FALSE;
