@@ -1,6 +1,6 @@
 # CodeIgniter 3 Modded
 
-A customized and modernized distribution of CodeIgniter 3 designed for long-term maintainability, PHP 8.3 compatibility, and improved developer experience in legacy enterprise applications.
+A customized and modernized distribution of CodeIgniter 3 designed for long-term maintainability, PHP 8.4 compatibility, and improved developer experience in legacy enterprise applications.
 
 This project extends the original CodeIgniter 3 framework with practical quality-of-life improvements, security enhancements, development tooling, logging utilities, migration support, and production-oriented optimizations while preserving the lightweight nature and architectural simplicity of CI3.
 
@@ -14,7 +14,7 @@ However, the framework is increasingly difficult to maintain on modern PHP versi
 
 This distribution was created to address those limitations by introducing:
 
-- PHP 8.3 compatibility adjustments
+- PHP 8.4 compatibility adjustments
 - Better project structure conventions
 - Migration tooling
 - Enhanced logging and debugging
@@ -31,29 +31,17 @@ without fundamentally changing how CodeIgniter 3 works.
 
 # PHP Compatibility
 
-## PHP 8.3 Support
+## PHP 8.4 Support
 
-This distribution includes modifications to core CodeIgniter 3 system files to improve compatibility with PHP 8.3.
+This distribution includes modifications to core CodeIgniter 3 system files to improve compatibility with PHP 8.4.
 
 ### What Was Modified
 
 - Added `#[\AllowDynamicProperties]` to affected system classes
 - Updated deprecated error handling logic for PHP 8+
 - Adjusted compatibility behavior for modern PHP runtime changes
-- The bundled `pgasync` driver targets PHP 7.4–8.3 and depends only on
-- `ext-pgsql`; it does not use any PHP 8-only syntax or functions.
-
----
-
-## Important Limitation: PHP 8.4
-
-This project is currently **not compatible with PHP 8.4 or above**.
-
-The incompatibility primarily originates from internal session handling behavior within CodeIgniter 3 itself.
-
-Supporting PHP 8.4 would require substantial rewrites to CI3 core internals and session algorithms, which would significantly diverge from the original framework architecture.
-
-For stability and maintainability reasons, this project intentionally preserves the existing CI3 architecture instead of heavily rewriting the framework core.
+- Adjusted how the core system make their session
+- The bundled `pgasync` driver targets PHP 7.4–8.3 and depends only on `ext-pgsql`; it does not use any PHP 8-only syntax or functions.
 
 ---
 
