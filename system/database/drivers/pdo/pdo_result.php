@@ -75,7 +75,7 @@ class CI_DB_pdo_result extends CI_DB_result {
 			return $this->num_rows = $num_rows;
 		}
 
-		return $this->num_rows = count($this->result_[]);
+		return $this->num_rows = count($this->result_array());
 	}
 
 	// --------------------------------------------------------------------
