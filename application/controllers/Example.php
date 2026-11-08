@@ -74,4 +74,59 @@ class App extends MY_Controller
         $xlsx = $this->phpxlsxgenerator->fromArray($data);
         return $xlsx->downloadAs('output_name.xlsx');
     }
+
+    public function redis() {
+        die;
+        $this->load->library('RedisLib');
+		$this->load->helper('template');
+
+        // Delete all redis cache
+		// // $this->redislib->flush();
+
+        // Delete specific redis cache
+		$this->redislib->get(['more_apps:1321321321']);
+
+        // Delete specific redis cache
+		$this->redislib->remove(['more_apps:1321321321']);
+
+        // Find all redis keys that match the wildcard pattern
+		$this->redislib->keys('more_apps:*');
+
+        // Select all redis cache that match the wildcard pattern
+		$this->redislib->getWithWildCard('more_apps:*');
+
+        // Delete all redis cache that match the wildcard pattern
+		$this->redislib->removeWithWildCard('more_apps:*');
+
+        // USE CASE
+        // ===================================
+        // Redis Cache
+        $nik = '1231232131231';
+        if ($this->redislib->get('more_apps:'.$nik)) {
+            $apps = json_decode($this->redislib->get('more_apps:'.$nik));
+        } else {
+            $apps = [
+                [
+                    'name' => 'App 1',
+                    'icon' => 'no-image.jpg',
+                ],
+                [
+                    'name' => 'App 2',
+                    'icon' => 'no-image.jpg',
+                ]
+            ];
+
+            foreach ($apps as $i => &$app) {
+                $apps[$i]['icon'] = !empty($apps[$i]['icon'])
+                    ? assets($apps[$i]['icon'])
+                    : null;
+            }
+
+            $this->redislib->set([
+                'more_apps:'.$nik => json_encode($apps)
+            ], 28800);
+        }
+
+        print_r($this->redislib->get('more_apps:'.$nik));
+    }
 }

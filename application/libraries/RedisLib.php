@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-use \Predis\Client as PredisClient;
+use Predis\Client as PredisClient;
 
 class RedisLib
 {
@@ -61,6 +61,52 @@ class RedisLib
 
         try {
             return $this->client->get($key);
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+    public function getWithWildCard(string $pattern = '*')
+    {
+        try {
+            $keys = $this->keys($pattern);
+
+            if (empty($keys)) {
+                return [];
+            }
+
+            $values = $this->client->mget($keys);
+
+            return array_combine($keys, $values);
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+    public function keys(string $pattern = '*', int $count = 100)
+    {
+        try {
+            $cursor = '0';
+            $result = [];
+
+            do {
+                $response = $this->client->scan($cursor, [
+                    'match' => $pattern,
+                    'count' => $count,
+                ]);
+
+                $cursor = $response[0];
+                $keys = $response[1];
+
+                if (!empty($keys)) {
+                    $result = array_merge($result, $keys);
+                }
+
+            } while ((string) $cursor !== '0');
+
+            return $result;
+
         } catch (Exception $e) {
             return $e->getMessage();
         }
