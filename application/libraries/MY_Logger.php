@@ -168,6 +168,9 @@ class MY_Logger extends \CI_Log
         // }
 
         $date = date("Y-m-d H:i:s.").gettimeofday()["usec"];
+        $msg = is_array($msg)
+            ? json_encode($msg, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK)
+            : $msg;
         $message .= $this->_format_line($level, $date, $msg);
 
         for ($written = 0, $length = self::strlen($message); $written < $length; $written += $result) {
