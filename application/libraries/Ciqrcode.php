@@ -1,4 +1,5 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
+
 /**
  * PHP QR Code porting for Codeigniter
  *
@@ -10,7 +11,6 @@
  *
  * @version		1.0
  */
-
 class Ciqrcode
 {
 	var $cacheable = true;

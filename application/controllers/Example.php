@@ -3,7 +3,7 @@
 use Virdiggg\MergeFiles\Merge as MF;
 use Virdiggg\SeederCi3\MY_Controller;
 
-class App extends MY_Controller
+class Example extends MY_Controller
 {
     private $mf;
 
@@ -73,6 +73,40 @@ class App extends MY_Controller
         $this->load->library('PhpXlsxGenerator');
         $xlsx = $this->phpxlsxgenerator->fromArray($data);
         return $xlsx->downloadAs('output_name.xlsx');
+    }
+
+    public function qr_code() {
+        die;
+        $this->load->library('ciqrcode');
+
+        $custom_name = 'my_qr_code.png';
+        $name = 'qr_code';
+
+        $data = 'https://www.google.com';
+
+        $path = STORAGE_PATH;
+
+        $confQRCode['cacheable'] = true; //boolean, the default is truede
+        $confQRCode['quality'] = true; //boolean, the default is true
+        $confQRCode['size'] = '1024'; //interger, the default is 1024
+        $confQRCode['black'] = array(224, 255, 255); // array, default is array(255,255,255)
+        $confQRCode['white'] = array(70, 130, 180); // array, default is array(0,0,0)
+        $confQRCode['label'] = $data;
+
+        $confQRCode['cachedir'] = $path . 'cache'; //string, the default is application/cache/
+        $confQRCode['errorlog'] = $path . 'log'; //string, the default is application/logs/
+        $confQRCode['imagedir'] = $path; // where qr code file stored
+
+        $this->ciqrcode->initialize($confQRCode);
+
+        $img = $custom_name ? $custom_name : $name . '_barcode.png';
+        $param['savename'] = $path . $img;
+        $param['data'] = $data;
+        $param['level'] = 'H'; //H=High
+        $param['size'] = 10;
+        $this->ciqrcode->generate($param); // to generate qr code
+
+        return $img;
     }
 
     public function redis() {

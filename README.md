@@ -25,7 +25,8 @@ This distribution was created to address those limitations by introducing:
 - PDF and XLSX helper integrations
 - Async PostgreSQL query support
 - Cleaner environment separation
-- Pusher and Redis support
+- Real-time event broadcasting through Pusher
+- Redis integration for caching and temporary data storage
 
 without fundamentally changing how CodeIgniter 3 works.
 
@@ -310,6 +311,196 @@ Additional helpers included:
 
 These provide commonly used utility functions missing from default CI3.
 
+# Realtime & Cache Integrations
+
+## Pusher Integration
+
+This distribution includes Pusher support through the official [Pusher PHP Server SDK](https://github.com/pusher/pusher-http-php).
+
+
+### Configuration
+
+Configure your Pusher credentials in:
+
+```text
+application/config/(ENVIRONMENT)/pusher.php
+```
+
+Example configuration:
+
+```php
+$config['pusher_app_id'] = '';
+$config['pusher_key'] = '';
+$config['pusher_secret'] = '';
+$config['pusher_cluster'] = 'ap1';
+$config['pusher_channel'] = '';
+```
+
+Provide the corresponding environment variables in your deployment environment.
+
+### Usage
+
+Pusher can be used to broadcast events to connected clients without requiring clients to continuously poll the server.
+
+Example:
+
+- Send pusher message
+```php
+$this->load->library('pusher');
+$this->pusher->send('pusher_action', [
+    'trx_id' => 123,
+    'message' => 'Just simple message OK',
+]);
+```
+
+- Receive push message
+```javascript
+<script type="text/javascript" src="<?= assets('js/pusher-7.0.6/pusher-with-encryption.min.js') ?>"></script>
+<script type="text/javascript">
+    const pusher = new Pusher("<?= $this->config->item('pusher_key') ?>", {
+        cluster: "<?= $this->config->item('pusher_cluster') ?>",
+        encrypted: true
+    });
+    const channel = pusher.subscribe("<?= $this->config->item('pusher_channel') ?>");
+    channel.bind('pusher_action', function(data) {
+        if (data) {
+            // do something
+            // showToast(data.message);
+            // fetch...
+        }
+    });
+</script>
+```
+
+Useful for:
+
+- Real-time notifications
+- Live dashboard updates
+- Background task status updates
+- Real-time application events
+
+---
+
+## Redis Integration
+
+This distribution includes Redis support through Predis, providing a convenient interface for caching and other Redis operations, using [Predis](https://github.com/predis/predis).
+
+### Configuration
+
+Redis configuration is located at:
+
+```text
+application/config/redis.php
+```
+
+The connection supports environment-based configuration:
+
+```php
+<?php
+defined('BASEPATH') or exit('No direct script access allowed');
+
+$config['redis_scheme'] = 'tcp'; // or tls
+$config['redis_host'] = 'redis'; // or 127.0.0.1
+$config['redis_port'] = 6379;
+$config['redis_password'] = null;
+$config['redis_ca_file']  = null; // tls only
+```
+
+Supported connection options:
+
+- TCP connection
+- Password authentication (optional)
+- TLS connection (optional)
+- CA certificate verification
+
+### Usage
+
+Load the Redis library:
+
+```php
+$this->load->library('RedisLib');
+```
+
+**Set a value**
+
+```php
+$this->redislib->set([
+    'user:123' => json_encode([
+        'name' => 'John Doe',
+    ]),
+], 3600);
+```
+
+The second argument specifies the expiration time in seconds.
+Use `null` for persistent keys.
+
+**Retrieve a value**
+
+```php
+$user = $this->redislib->get('user:123');
+
+$user = $user ? json_decode($user) : null;
+```
+
+**Delete a key**
+
+```php
+$this->redislib->remove('user:123');
+```
+
+**Delete keys using a wildcard pattern**
+
+```php
+$this->redislib->removeWithWildCard('user:*');
+```
+
+**Select keys using a wildcard pattern**
+
+```php
+$this->redislib->getWithWildCard('user:*');
+```
+
+**Find all keys using a wildcard pattern**
+
+```php
+$this->redislib->keys('user:*');
+```
+
+**Flush Redis database**
+
+```php
+$this->redislib->flush();
+```
+
+**Test connection**
+
+```php
+$this->redislib->test();
+```
+
+### Available Methods
+
+| Method | Description |
+|---|---|
+| `test()` | Test Redis connection |
+| `keys($key)` | Retrieve all keys matching pattern |
+| `get($key)` | Retrieve a value |
+| `getWithWildCard($key)` | Select keys matching a pattern |
+| `set($param, $timeout)` | Store one or multiple values |
+| `remove($key)` | Delete one or multiple keys |
+| `removeWithWildCard($key)` | Delete keys matching a pattern |
+| `flush()` | Flush the Redis database |
+
+Wildcard operations use Redis SCAN rather than KEYS.
+
+### Common Use Cases
+
+- Application caching
+- Session-related data storage
+- Temporary data storage
+- Frequently accessed database results
+- Cache invalidation
+
 ---
 
 ## Slug-Based Secure File Access
@@ -437,6 +628,36 @@ application/traits/SoftDelete.php
 Documentation:
 
 - [Softdelete Trait](./docs/SOFTDELETE.md)
+
+# Third-Party Attributions
+
+This project includes or adapts third-party code and libraries.
+Credits and original authorship are acknowledged below.
+
+## PHP QR Code
+
+The PHP QR Code library is a CodeIgniter port of the original PHP QR Code project.
+
+- **Original project:** PHP QR Code
+- **Original author:** [PHP QR Code Project](http://phpqrcode.sourceforge.net/)
+- **CodeIgniter porting author:** Dwi Setiyadi
+- **Contact:** dwi.setiyadi@gmail.com
+
+The original library header and authorship notices are retained where applicable.
+
+## PHP XLSX Generator
+
+This project includes code based on the PHP XLSX Generator.
+
+- **Class:** `PhpXlsxGenerator`
+- **Original author:** CodexWorld
+- **Contact:** codexworld.com@gmail.com
+
+The original authorship notices are retained where applicable.
+
+---
+
+Third-party components remain subject to their respective original licenses and attribution requirements. Please refer to their original source distributions for licensing details.
 
 ---
 
