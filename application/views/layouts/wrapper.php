@@ -1,17 +1,4 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <title><?= tpl_yield('title', 'My App') ?></title>
-    <!-- css, jquery, etc -->
-</head>
-<body>
-    <?= tpl_yield('content') ?>
-
-    <script src="..."></script>
-    <?= tpl_stack('scripts') ?>
-</body>
-</html>
-<!DOCTYPE html>
 <html lang="id" dir="ltr">
 
 <head>
