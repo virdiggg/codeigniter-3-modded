@@ -28,6 +28,7 @@ respond @blocked 404
     not file
     not path /assets/*
     not path /upload/*
+    not path /docs/*
     not path /robots.txt
 }
 

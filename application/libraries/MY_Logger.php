@@ -2,7 +2,7 @@
 
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Logger extends \CI_Log
+class MY_Logger extends \CI_Log
 {
     /**
      * Log file name prefix
@@ -111,6 +111,8 @@ class Logger extends \CI_Log
         if (!empty($config['log_file_permissions']) && is_int($config['log_file_permissions'])) {
             $this->_file_permissions = $config['log_file_permissions'];
         }
+
+        $this->write_log('error', 'Initialized logger: ' . $this->_log_path);
     }
 
     // --------------------------------------------------------------------

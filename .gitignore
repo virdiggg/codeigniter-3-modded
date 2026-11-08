@@ -39,3 +39,5 @@ application/vendor/*
 upload/*
 !upload/.htaccess
 !upload/index.html
+
+*.sh

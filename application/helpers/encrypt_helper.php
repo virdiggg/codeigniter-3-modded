@@ -13,14 +13,14 @@
 
 if (!function_exists('encrypt')) 
 {
-    function parseSlug($fullPath) {
+    function parseSlug(string $fullPath): string {
         return base_url('storage?s=' . encrypt($fullPath));
     }
 
     /**
      * The algorithm used for encryption.
      *
-     * @param string
+     * @return string
      */
     function secret_key()
     {
@@ -37,7 +37,7 @@ if (!function_exists('encrypt'))
     /**
      * The algorithm used for encryption.
      *
-     * @param string
+     * @return string
      */
     function chiper()
     {
@@ -48,7 +48,7 @@ if (!function_exists('encrypt'))
     /**
      * The supported cipher algorithms and their properties.
      *
-     * @param array
+     * @return array
      */
     function supportedCiphers()
     {
