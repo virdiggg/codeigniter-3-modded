@@ -60,8 +60,38 @@
 <body>
     <?= tpl_yield('content') ?>
 
+    <script type="text/javascript" src="<?= assets('js/pusher-7.0.6/pusher-with-encryption.min.js') ?>"></script>
     <script type="text/javascript">
         const TEST = 'ok';
+    <?php if (!empty($this->config->item('pusher_key'))): ?>
+        // Will load pusher when config is set
+        const pusher = new Pusher("<?= $this->config->item('pusher_key') ?>", {
+            cluster: "<?= $this->config->item('pusher_cluster') ?>",
+            encrypted: true
+        });
+        const channel = pusher.subscribe("<?= $this->config->item('pusher_channel') ?>");
+
+        // Example of binding to a Pusher event and handling the data received
+        // This is for all pages that use this wrapper.php layout
+        channel.bind('pusher_action', function(data) {
+            if (data) {
+                // do something
+                // showToast(data.message);
+                // fetch...
+            }
+        });
+        channel.bind('pusher_action_changed', function(data) {
+            if (data) {
+                if (typeof data.id == 'undefined') {
+                    // do something
+                    // showToast(data.message);
+                    // fetch...
+                    // return;
+                }
+                // other fetch...
+            }
+        });
+    <?php endif ?>
     </script>
     <?= tpl_stack('scripts') ?>
 </body>

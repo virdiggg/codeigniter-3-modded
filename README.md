@@ -1,8 +1,8 @@
 # CodeIgniter 3 Modded
 
-A customized and modernized distribution of CodeIgniter 3 designed for long-term maintainability, PHP 8.4 compatibility, and improved developer experience in legacy enterprise applications.
+A customized and modernized distribution of CodeIgniter 3 designed for long-term maintainability, PHP 8.5 compatibility, and improved developer experience in legacy enterprise applications.
 
-This project extends the original CodeIgniter 3 framework with practical quality-of-life improvements, security enhancements, development tooling, logging utilities, migration support, blade-like templating, and production-oriented optimizations while preserving the lightweight nature and architectural simplicity of CI3.
+This project extends the original CodeIgniter 3 framework with practical quality-of-life improvements, security enhancements, development tooling, logging utilities, migration support, blade-like templating, pusher and redis support, and production-oriented optimizations while preserving the lightweight nature and architectural simplicity of CI3.
 
 ---
 
@@ -14,7 +14,7 @@ However, the framework is increasingly difficult to maintain on modern PHP versi
 
 This distribution was created to address those limitations by introducing:
 
-- PHP 8.4 compatibility adjustments
+- PHP 8.5 compatibility adjustments
 - Better project structure conventions
 - Migration tooling
 - Enhanced logging and debugging
@@ -25,6 +25,7 @@ This distribution was created to address those limitations by introducing:
 - PDF and XLSX helper integrations
 - Async PostgreSQL query support
 - Cleaner environment separation
+- Pusher and Redis support
 
 without fundamentally changing how CodeIgniter 3 works.
 
@@ -32,9 +33,9 @@ without fundamentally changing how CodeIgniter 3 works.
 
 # PHP Compatibility
 
-## PHP 8.4 Support
+## PHP 8.5 Support
 
-This distribution includes modifications to core CodeIgniter 3 system files to improve compatibility with PHP 8.4.
+This distribution includes modifications to core CodeIgniter 3 system files to improve compatibility with PHP 8.5.
 
 ### What Was Modified
 
@@ -447,6 +448,8 @@ This distribution includes several development-focused packages by default:
 - `virdiggg/seeder-ci3`
 - `virdiggg/log-parser-ci3`
 - `virdiggg/merge-files`
+- `pusher/pusher-php-server`
+- `predis/predis`
 
 ---
 

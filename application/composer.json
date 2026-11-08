@@ -15,6 +15,7 @@
         "virdiggg/log-parser-ci3": "^1.0",
         "virdiggg/merge-files": "^2.0",
         "virdiggg/seeder-ci3": "^3.1.0",
+        "pusher/pusher-php-server": "^7.3",
         "predis/predis": "^3.0",
         "ext-mbstring": "*"
     },

@@ -74,4 +74,15 @@
 <?php tpl_push('scripts') ?>
     <script>console.log('dashboard only');</script>
     <script>console.log(TEST);</script>
+    <script type="text/javascript">
+        // Can be used on other places, but must be on the same channel as the one above
+        // This is for specific page only, so that it won't trigger on other pages
+        channel.bind('other_push_action', function(data) {
+            if (data) {
+                // do something
+                // showToast(data.message);
+                // fetch...
+            }
+        });
+    </script>
 <?php tpl_end() ?>
