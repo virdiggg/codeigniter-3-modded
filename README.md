@@ -2,7 +2,7 @@
 
 A customized and modernized distribution of CodeIgniter 3 designed for long-term maintainability, PHP 8.4 compatibility, and improved developer experience in legacy enterprise applications.
 
-This project extends the original CodeIgniter 3 framework with practical quality-of-life improvements, security enhancements, development tooling, logging utilities, migration support, and production-oriented optimizations while preserving the lightweight nature and architectural simplicity of CI3.
+This project extends the original CodeIgniter 3 framework with practical quality-of-life improvements, security enhancements, development tooling, logging utilities, migration support, blade-like templating, and production-oriented optimizations while preserving the lightweight nature and architectural simplicity of CI3.
 
 ---
 
@@ -18,6 +18,7 @@ This distribution was created to address those limitations by introducing:
 - Better project structure conventions
 - Migration tooling
 - Enhanced logging and debugging
+- Blade-like templating
 - Security-focused defaults
 - Resource generation utilities
 - Query profiling
@@ -41,7 +42,7 @@ This distribution includes modifications to core CodeIgniter 3 system files to i
 - Updated deprecated error handling logic for PHP 8+
 - Adjusted compatibility behavior for modern PHP runtime changes
 - Adjusted how the core system make their session
-- The bundled `pgasync` driver targets PHP 7.4–8.3 and depends only on `ext-pgsql`; it does not use any PHP 8-only syntax or functions.
+- The bundled `pgasync` driver targets PHP 7.4–8.5 and depends only on `ext-pgsql`; it does not use any PHP 8-only syntax or functions.
 
 ---
 
@@ -174,6 +175,7 @@ Features include:
 - API resource scaffolding
 - Environment-aware command execution
 - CLI helper utilities
+- Blade-like templating support
 
 Read more:
 
@@ -199,6 +201,20 @@ Features:
 - Daily log separation
 
 ### Enable Query Profiler
+
+Edit:
+
+```php
+application/config/(ENVIRONMENT)/config.php
+```
+
+Enable:
+
+```php
+$config['enable_hooks'] = TRUE;
+```
+
+---
 
 Edit:
 
@@ -249,7 +265,7 @@ Read more:
 Custom logging library:
 
 ```text
-application/libraries/Logger.php
+application/libraries/MY_Logger.php
 ```
 
 Allows custom log channels/files.
@@ -257,7 +273,7 @@ Allows custom log channels/files.
 Example:
 
 ```php
-$this->load->library('Logger');
+$this->load->library('MY_Logger', NULL, 'logger');
 
 $this->logger->setFilenamePrefix('queries');
 
@@ -270,7 +286,7 @@ $this->logger->write_log('error', $message);
 
 ## Better HTTP 500 Handling
 
-Default CI3 production error handling is replaced with a cleaner custom implementation.
+Default CI3 production error handling is replaced with a cleaner custom implementation as default CI3 500 exception still throw error code to view even in production ENVIRONMENT.
 
 Files:
 
@@ -289,6 +305,7 @@ Additional helpers included:
 - `str`
 - `permission`
 - `encrypt`
+- `template`
 
 These provide commonly used utility functions missing from default CI3.
 
@@ -336,6 +353,13 @@ The following directories are automatically generated:
 - `assets`
 - `application/storage`
 - `application/migrations`
+
+---
+
+## Blade-like templating
+
+- Initial template file is `application/views/layouts/wrapper.php`, adjust as you need.
+- Example view is `application/views/example.php`. This include template extending, push javascript and styles sention, HTML title, and so on.
 
 ---
 
